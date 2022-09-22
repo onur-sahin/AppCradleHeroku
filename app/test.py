@@ -2,6 +2,8 @@ import requests
 
 import pyaudio
 
+import wave
+
 def record_and_send():
     pa = pyaudio.PyAudio()
 
@@ -15,26 +17,37 @@ def record_and_send():
                         )
 
     audio_bytes=  stream_in.read(5*22050)
+    
+    wave_write = wave.open("test.wav", "wb")
+    
+    wave_write.setnchannels(1)        # number of channels  - mono channel
+    wave_write.setsampwidth(2)        # sample width in bytes
+    wave_write.setframerate(22050)    # sampling rate in Hz
+
+    wave_write.writeframes(audio_bytes)
+
+    wave_write.close()
 
     # print(type(audio_bytes))
 
-    resp = requests.post("http://cradle-server.herokuapp.com/predict",
-                      # files={"file":None},
-                      data={"data":audio_bytes})
+    resp = requests.post(   "http://cradle-server.herokuapp.com/predict",
+                            files={"file":open("test.wav", "rb")},
+                            # data=audio_bytes
+                        )
 
 
     print(resp.text)
 
 
 
-record_and_send()
+# record_and_send()
 
 
 # resp = requests.post("http://127.0.0.1:8080/predict", files={"file":open("yeni.wav", "rb")})
 
 
-# resp = requests.post("http://cradle-server.herokuapp.com/predict",
-                      # files={"file":open("../test7.wav", "rb")})
+resp = requests.post("http://cradle-server.herokuapp.com/predict",
+                      files={"file":open("../yeni.wav", "rb")})
 
 # resp = requests.post("http://localhost:5000/predict",
 #                       files={"file":open("test.wav", "rb")})
@@ -42,7 +55,7 @@ record_and_send()
 
 
 
-# print(resp.text)
+print(resp.text)
 
 
 
