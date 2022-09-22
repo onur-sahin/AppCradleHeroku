@@ -2,7 +2,7 @@
 
 
 from random import randint, random
-from typing import BinaryIO
+from typing import BinaryIO, Tuple
 import torch
 import torchaudio.transforms as transforms
 import soundfile
@@ -162,18 +162,11 @@ def spectro_augment(spec, max_mask_pct=0.1, n_freq_mask=1, n_time_mask=1):
     return aug_spec
 
 
-def transform_audio(audio_bytes:BinaryIO)->torch.Tensor:
+def transform_audio(sig:Tuple[torch.Tensor, int])->torch.Tensor:
     
     duration    = 5000
     sample_rate = 22050
     n_channel   = 1
-
-    sig:tuple[np.ndarray, int] = soundfile.read( io.BytesIO(audio_bytes), dtype='float32' )
-
-    waveform:torch.Tensor = torch.from_numpy(sig[0].transpose())
-    sr:int = sig[1]
-
-    sig = (waveform, sr)
     
 
     sig = pad_trunc(sig, duration)
@@ -181,7 +174,7 @@ def transform_audio(audio_bytes:BinaryIO)->torch.Tensor:
 
     sig = rechannel(sig, n_channel)
 
-    waveform = torchaudio.functional.resample(sig[0], sr, sample_rate, resampling_method="kaiser_window")
+    waveform = torchaudio.functional.resample(sig[0], sig[1], sample_rate, resampling_method="kaiser_window")
 
     sig = (waveform, sample_rate)
 
