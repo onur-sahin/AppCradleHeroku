@@ -4,7 +4,7 @@ import requests
 
 
 resp = requests.post("http://cradle-server.herokuapp.com/predict",
-                      files={"file":open("yeni2.wav", "rb")})
+                      files={"file":open("../test7.wav", "rb")})
 
 # resp = requests.post("http://localhost:5000/predict",
 #                       files={"file":open("test.wav", "rb")})

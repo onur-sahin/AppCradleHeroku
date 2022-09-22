@@ -40,7 +40,7 @@ def predict():
     if (data==None and file==None):
         return jsonify({"erorr": "NO FILE OR DATA"})
 
-    elif file != None:
+    elif file != None ):
 
         if file.filename == "":
             return jsonify({"erorr": "NO FILE"})
