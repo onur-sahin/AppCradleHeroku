@@ -55,6 +55,9 @@ def predict():
 
         waveform:torch.Tensor = torch.from_numpy(sig[0].transpose())
         sr:int = sig[1]
+        
+        if waveform.dim() == 1:
+            waveform = torch.unsqueeze(waveform, dim=0)
 
         sig = (waveform, sr)
 
@@ -76,6 +79,7 @@ def predict():
         sig =  soundfile.read(temp, dtype="float32")
 
         waveform:torch.Tensor = torch.from_numpy(sig[0].transpose())
+        
         
         if waveform.dim() == 1:
             waveform = torch.unsqueeze(waveform, dim=0)

@@ -31,8 +31,8 @@ def record_and_send():
     # print(type(audio_bytes))
 
     resp = requests.post(   "http://cradle-server.herokuapp.com/predict",
-                            files={"file":open("test.wav", "rb")},
-                            # data=audio_bytes
+                            # files={"file":open("test.wav", "rb")},
+                            data=audio_bytes
                         )
 
 
@@ -40,14 +40,14 @@ def record_and_send():
 
 
 
-# record_and_send()
+record_and_send() 
 
 
 # resp = requests.post("http://127.0.0.1:8080/predict", files={"file":open("yeni.wav", "rb")})
 
 
-resp = requests.post("http://cradle-server.herokuapp.com/predict",
-                      files={"file":open("../yeni.wav", "rb")})
+# resp = requests.post("http://cradle-server.herokuapp.com/predict",
+                      # files={"file":open("test.wav", "rb")})
 
 # resp = requests.post("http://localhost:5000/predict",
 #                       files={"file":open("test.wav", "rb")})
@@ -55,7 +55,7 @@ resp = requests.post("http://cradle-server.herokuapp.com/predict",
 
 
 
-print(resp.text)
+# print(resp.text)
 
 
 
