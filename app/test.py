@@ -19,7 +19,7 @@ def record_and_send():
     # print(type(audio_bytes))
 
     resp = requests.post("http://cradle-server.herokuapp.com/predict",
-                      files={"file":None},
+                      # files={"file":None},
                       data={"data":audio_bytes})
 
 
