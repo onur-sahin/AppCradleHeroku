@@ -37,7 +37,7 @@ def predict():
     
     data = request.data
 
-    if not (data==None or file==None):
+    if not (data==None and file==None):
         return jsonify({"erorr": "NO FILE OR DATA"})
 
     elif file != None:
