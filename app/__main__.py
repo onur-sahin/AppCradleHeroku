@@ -35,7 +35,7 @@ def predict():
 
     file:BinaryIO = request.files.get('file')
     
-    data = request.data
+    data = request.data.get('data')
 
     if (data==None and file==None):
         return jsonify({"erorr": "NO FILE OR DATA"})
