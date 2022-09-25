@@ -30,11 +30,15 @@ def record_and_send():
 
     # print(type(audio_bytes))
 
-    resp = requests.post(   "http://cradle-server.herokuapp.com/predict",
+    # resp = requests.post(   "http://cradle-server.herokuapp.com/predict",
                             # files={"file":open("test.wav", "rb")},
-                            data=audio_bytes
-                        )
+                            # data=audio_bytes
+                        # )
 
+    resp = requests.post(   "http://cradle-server.herokuapp.com/predict",
+                            files=None,
+                            data=audio_bytes
+                    )
 
     print(resp.text)
 

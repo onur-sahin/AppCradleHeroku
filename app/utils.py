@@ -9,6 +9,7 @@ import soundfile
 import io
 import numpy as np
 import torchaudio
+import noisereduce as nr
 
 
 
@@ -161,24 +162,33 @@ def spectro_augment(spec, max_mask_pct=0.1, n_freq_mask=1, n_time_mask=1):
 
     return aug_spec
 
+@staticmethod
+def noise_reduce(aud):
+    
+    sig = nr.reduce_noise(y=aud[0], sr=aud[1], prop_decrease=1)
+    
+    return ( sig, aud[1] )
 
-def transform_audio(sig:Tuple[torch.Tensor, int])->torch.Tensor:
+
+def transform_audio(aud:Tuple[torch.Tensor, int])->torch.Tensor:
     
     duration    = 5000
     sample_rate = 22050
     n_channel   = 1
     
+    aud = noise_reduce(aud)
+    
 
-    sig = pad_trunc(sig, duration)
+    aud = pad_trunc(aud, duration)
 
 
-    sig = rechannel(sig, n_channel)
+    aud = rechannel(aud, n_channel)
 
-    waveform = torchaudio.functional.resample(sig[0], sig[1], sample_rate, resampling_method="kaiser_window")
+    waveform = torchaudio.functional.resample(aud[0], aud[1], sample_rate, resampling_method="kaiser_window")
 
-    sig = (waveform, sample_rate)
+    aud = (waveform, sample_rate)
 
-    spec:torch.Tensor = spectro_gram(sig, n_mels=64, n_fft=1024, hop_len=None)
+    spec:torch.Tensor = spectro_gram(aud, n_mels=64, n_fft=1024, hop_len=None)
 
     spec_m, spec_s = spec.mean(), spec.std()
     spec = (spec - spec_m) / spec_s

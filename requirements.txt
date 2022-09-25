@@ -3,6 +3,7 @@ flask
 gunicorn
 numpy
 SoundFile
+noisereduce
 torch==1.12.1+cpu
 torch-tb-profiler==0.4.0
 torchaudio==0.12.1+cpu
