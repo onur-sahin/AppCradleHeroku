@@ -165,7 +165,7 @@ def spectro_augment(spec, max_mask_pct=0.1, n_freq_mask=1, n_time_mask=1):
 @staticmethod
 def noise_reduce(aud):
     
-    sig = nr.reduce_noise(y=aud[0], sr=aud[1], prop_decrease=1)
+    sig = nr.reduce_noise(y=aud[0], sr=aud[1], prop_decrease=0.90)
     
     return ( sig, aud[1] )
 
