@@ -176,8 +176,6 @@ def transform_audio(aud:Tuple[torch.Tensor, int])->torch.Tensor:
     sample_rate = 22050
     n_channel   = 1
     
-    aud = noise_reduce(aud)
-    
 
     aud = pad_trunc(aud, duration)
 

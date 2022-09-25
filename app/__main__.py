@@ -2,7 +2,7 @@
 
 import wave
 from flask import Flask, request, jsonify
-from app.utils import transform_audio
+from app.utils import transform_audio, noise_reduce
 from app.cry_detection.createModel      import is_it_crying
 from app.cry_classification.createModel import classification
 import io
@@ -51,15 +51,17 @@ def predict():
         
         audio_bytes:BinaryIO = file.read()
 
-        sig:tuple[np.ndarray, int] = soundfile.read( io.BytesIO(audio_bytes), dtype='float32' )
+        aud:tuple[np.ndarray, int] = soundfile.read( io.BytesIO(audio_bytes), dtype='float32' )
+        
+        aud = noise_reduce(aud)
 
-        waveform:torch.Tensor = torch.from_numpy(sig[0].transpose())
-        sr:int = sig[1]
+        waveform:torch.Tensor = torch.from_numpy(aud[0].transpose())
+        sr:int = aud[1]
         
         if waveform.dim() == 1:
             waveform = torch.unsqueeze(waveform, dim=0)
 
-        sig = (waveform, sr)
+        aud = (waveform, sr)
 
     elif data != None:
 
@@ -76,23 +78,25 @@ def predict():
         wave_write.close()
         temp.seek(0)
 
-        sig =  soundfile.read(temp, dtype="float32")
+        aud =  soundfile.read(temp, dtype="float32")
+        
+        aud = noise_reduce(aud)
 
-        waveform:torch.Tensor = torch.from_numpy(sig[0].transpose())
+        waveform:torch.Tensor = torch.from_numpy(aud[0].transpose())
         
         
         if waveform.dim() == 1:
             waveform = torch.unsqueeze(waveform, dim=0)
         
-        sr:int = sig[1]
+        sr:int = aud[1]
 
-        sig = (waveform, sr)
+        aud = (waveform, sr)
 
 
     try:
         
 
-        spectrom = transform_audio(sig)
+        spectrom = transform_audio(aud)
 
         outputs_detection = is_it_crying(spectrom)
 
