@@ -30,14 +30,14 @@ class Classifier(nn.Module):
         conv_layers.extend( [self.conv2, self.relu, self.bn2] )
 
 
-        # 3. convolution block
+        # 3. Convolution Block
         self.conv3 = nn.Conv2d(16, 32, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1))
         self.bn3 = nn.BatchNorm2d(32)
         init.kaiming_normal_(self.conv3.weight, a= 0.1)
         self.conv3.bias.data.zero_()
         conv_layers.extend( [self.conv3, self.relu, self.bn3] )
 
-        # 4. convolution block
+        # 4. Convolution Block
         self.conv4 = nn.Conv2d(32, 64, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1))
         self.bn4 = nn.BatchNorm2d(64)
         init.kaiming_normal_(self.conv4.weight, a = 0.1)
