@@ -1,0 +1,1 @@
+python sürümü 3.10.6 dan  -> 3.11.1'e yükseltildi
